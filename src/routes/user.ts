@@ -4,6 +4,14 @@ import { knex } from "../database";
 import { randomUUID } from "crypto";
 
 export async function userRoutes(app: FastifyInstance) {
+  app.get("/", async (request, reply) => {
+    const users = await knex("users").select();
+
+    return {
+      users,
+    };
+  });
+
   app.post("/", async (request, reply) => {
     const createUserBodySchema = z.object({
       name: z.string(),
@@ -16,7 +24,7 @@ export async function userRoutes(app: FastifyInstance) {
       id: randomUUID(),
       name,
       email,
-      created_at: new Date(),
+      created_at: new Date().toISOString(),
     });
 
     return reply.status(201).send();
