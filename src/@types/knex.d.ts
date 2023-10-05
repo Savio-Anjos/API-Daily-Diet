@@ -5,9 +5,16 @@ declare module "knex/types/tables" {
     users: {
       id: string;
       name: string;
-      email: number;
+      email: string;
       created_at: string;
-      section_id?: string;
+    };
+
+    meals: {
+      id: string;
+      name: string;
+      description: string;
+      created_at: string;
+      user_id: string;
     };
   }
 }

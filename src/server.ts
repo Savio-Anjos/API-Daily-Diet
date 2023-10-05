@@ -1,6 +1,6 @@
 import fastify from "fastify";
 
-export const app = fastify();
+import { app } from "./app";
 
 app
   .listen({
