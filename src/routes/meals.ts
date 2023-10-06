@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { knex } from "../database";
 import { randomUUID } from "crypto";
 
@@ -25,15 +25,68 @@ export async function mealsRoutes(app: FastifyInstance) {
   });
 
   app.get("/:id", async (request, reply) => {
-    const getSnackParamsSchema = z.object({
+    const getMealParamsSchema = z.object({
       id: z.string().uuid(),
     });
 
-    const { id } = getSnackParamsSchema.parse(request.params);
+    const { id } = getMealParamsSchema.parse(request.params);
 
     const meals = await knex("meals").where({ id }).first();
 
     return { meals };
+  });
+
+  app.put("/:id", async (request, reply) => {
+    const getSnackParamsSchema = z.object({
+      id: z.string().uuid(),
+    });
+
+    const getSnackBodySchema = z.object({
+      name: z.string(),
+      description: z.string(),
+      is_diet: z.boolean(),
+    });
+
+    const { id } = getSnackParamsSchema.parse(request.params);
+
+    // Obtenha os dados existentes da refeição
+    const existingMeal = await knex("meals").where({ id }).first();
+
+    if (!existingMeal) {
+      return reply.status(404).send("Refeição não encontrada.");
+    }
+
+    // Parse dos dados da solicitação
+    const { name, description, is_diet } = getSnackBodySchema.parse(
+      request.body
+    );
+
+    // Atualize apenas os campos fornecidos na solicitação
+    const updatedFields: {
+      name: string;
+      description: string;
+      is_diet: boolean;
+    } = {
+      name: "",
+      description: "",
+      is_diet: false,
+    };
+
+    if (name !== undefined) {
+      updatedFields.name = name;
+    }
+
+    if (description !== undefined) {
+      updatedFields.description = description;
+    }
+
+    if (is_diet !== undefined) {
+      updatedFields.is_diet = is_diet;
+    }
+
+    await knex("meals").where({ id }).update(updatedFields);
+
+    return reply.status(200).send("Revision updated successfully.");
   });
 
   app.post("/", async (request, reply) => {
