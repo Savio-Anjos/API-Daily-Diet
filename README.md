@@ -2,9 +2,9 @@
 
  <p align='center'>
 
-<img src="https://img.shields.io/github/repo-size/Savio-Anjos//API-Daily-Diet?color=267DCD">
-<img src="https://img.shields.io/github/languages/count/Savio-Anjos//API-Daily-Diet?color=267DCD">
-<img src="https://img.shields.io/github/last-commit/Savio-Anjos//API-Daily-Diet?color=267DCD">  
+<img src="https://img.shields.io/github/repo-size/Savio-Anjos/API-Daily-Diet?color=267DCD">
+<img src="https://img.shields.io/github/languages/count/Savio-Anjos/API-Daily-Diet?color=267DCD">
+<img src="https://img.shields.io/github/last-commit/Savio-Anjos/API-Daily-Diet?color=267DCD">  
 </p>
 
 ## 🚀 Tecnologias
