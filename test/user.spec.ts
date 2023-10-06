@@ -35,7 +35,7 @@ describe("User routes", () => {
       });
 
       const listUsersResponse = await request(app.server)
-        .get("users")
+        .get("/users")
         .expect(200);
 
       expect(listUsersResponse.body.users).toEqual([
