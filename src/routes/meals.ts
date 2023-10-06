@@ -49,19 +49,16 @@ export async function mealsRoutes(app: FastifyInstance) {
 
     const { id } = getSnackParamsSchema.parse(request.params);
 
-    // Obtenha os dados existentes da refeição
     const existingMeal = await knex("meals").where({ id }).first();
 
     if (!existingMeal) {
       return reply.status(404).send("Refeição não encontrada.");
     }
 
-    // Parse dos dados da solicitação
     const { name, description, is_diet } = getSnackBodySchema.parse(
       request.body
     );
 
-    // Atualize apenas os campos fornecidos na solicitação
     const updatedFields: {
       name: string;
       description: string;
@@ -86,7 +83,23 @@ export async function mealsRoutes(app: FastifyInstance) {
 
     await knex("meals").where({ id }).update(updatedFields);
 
-    return reply.status(200).send("Revision updated successfully.");
+    return reply.status(200).send("Meal updated successfully");
+  });
+
+  app.delete("/:id", async (request, reply) => {
+    const getMealParamsSchema = z.object({
+      id: z.string().uuid(),
+    });
+
+    const { id } = getMealParamsSchema.parse(request.params);
+
+    const deletedMeal = await knex("meals").where({ id }).del();
+
+    if (deletedMeal === 0) {
+      return reply.status(404).send("Meal not found.");
+    }
+
+    return reply.status(200).send("Meal deleted successfully.");
   });
 
   app.post("/", async (request, reply) => {
